@@ -14,36 +14,42 @@ public abstract class BillingRecord {
 	// This needs an id
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
-	
+	private Long Id;
+
 	// This needs a user named createdBy
 	@ManyToOne
 	private User createdBy;
-	
-	// This needs a name;
+
+	// This needs a name
 	private String name;
-	
+
 	// This needs a string named description
 	private String description;
-	
+
 	// This needs an invoice line item named lineItem. It should be a one-to-one
 	// relationship mapped by billingRecord
+
 	@OneToOne(mappedBy = "billingRecord")
-	private InvoiceLineItem lineItem; 
-	
+	private InvoiceLineItem lineItem;
+
 	// This needs a company named client that is a many-to-one relationship
+
 	@ManyToOne
 	private Company client;
-	
+
+	public BillingRecord() {
+
+	}
+
 	// This needs an abstract method that returns a double named getTotal()
 	public abstract double getTotal();
 
 	public Long getId() {
-		return id;
+		return Id;
 	}
 
 	public void setId(Long id) {
-		this.id = id;
+		Id = id;
 	}
 
 	public User getCreatedBy() {
@@ -70,11 +76,11 @@ public abstract class BillingRecord {
 		this.description = description;
 	}
 
-	public InvoiceLineItem getInvoiceLineItem() {
+	public InvoiceLineItem getLineItem() {
 		return lineItem;
 	}
 
-	public void setInvoiceLineItem(InvoiceLineItem invoiceLineItem) {
+	public void setLineItem(InvoiceLineItem invoiceLineItem) {
 		this.lineItem = invoiceLineItem;
 	}
 
@@ -86,5 +92,5 @@ public abstract class BillingRecord {
 		this.client = client;
 	}
 
-		// All the getters and setters
+	// All the getters and setters
 }

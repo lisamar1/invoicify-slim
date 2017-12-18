@@ -13,27 +13,29 @@ import javax.persistence.OneToMany;
 // This needs to be an entity
 @Entity
 public class Invoice {
-
+	
 	// This needs an id
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-
-	// This needs a many-to-one relationship to a company named "company"
+	
+	// This needs a many-to-one relationship to a company named "company"	
+	
 	@ManyToOne
 	private Company company;
-
 	// This needs a many-to-one relationship to a user named "createdBy"
+	
 	@ManyToOne
 	private User createdBy;
-
-	// This needs a string named "invoiceNumber"
+	
+	// This needs a string named "invoiceNumber"	
 	private String invoiceNumber;
-
-	// This needs a one-to-many relationship for a list of invoice line items mapped
-	// by "invoice" with a cascade type of ALL
-	@OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL)
-	private List<InvoiceLineItem> invoiceLineItems;
+	
+	// This needs a one-to-many relationship for a list of invoice line items mapped by "invoice" with 
+	//a cascade type of ALL
+	
+	@OneToMany(mappedBy ="invoice", cascade = CascadeType.ALL)
+	List<InvoiceLineItem> invoiceLineItems;
 
 	public Long getId() {
 		return id;
@@ -71,10 +73,14 @@ public class Invoice {
 		return invoiceLineItems;
 	}
 
-	public void setInvoiceLineItems(List<InvoiceLineItem> invoicelineitems) {
-		this.invoiceLineItems = invoicelineitems;
+	public void setInvoiceLineItems(List<InvoiceLineItem> lineItems) {
+		this.invoiceLineItems = lineItems;
 	}
-
+	
+	
+	
+	
+	
 	// This needs getters and setters
 
 }

@@ -2,6 +2,7 @@ package com.lmig.gfc.invoicify.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
 import com.lmig.gfc.invoicify.models.BillingRecord;
 import com.lmig.gfc.invoicify.models.Company;
 import com.lmig.gfc.invoicify.models.Invoice;
@@ -22,9 +24,16 @@ import com.lmig.gfc.invoicify.services.InvoiceRepository;
 @RequestMapping("/invoices")
 public class InvoicesController {
 
-	private InvoiceRepository invoiceRepository;
+	private InvoiceRepository invoicesRepository;
 	private CompanyRepository companyRepository;
 	private BillingRecordRepository billingRecordRepository;
+
+	public InvoicesController(InvoiceRepository invoicesRepository, CompanyRepository companyRepository,
+			BillingRecordRepository billingRecordRepository) {
+		this.invoicesRepository = invoicesRepository;
+		this.companyRepository = companyRepository;
+		this.billingRecordRepository = billingRecordRepository;
+	}
 
 	@GetMapping("")
 	public ModelAndView showInvoices() {
@@ -32,10 +41,13 @@ public class InvoicesController {
 
 		// Get all the invoices and add them to the model and view with the key
 		// "invoices"
-		List<Invoice> invoices = invoiceRepository.findAll();
+
+		List<Invoice> invoices = invoicesRepository.findAll();
 		mv.addObject("invoices", invoices);
 
 		// Add a key to the model and view named "showTable" which should be true if
+		// there's more than one invoice and false if there are zero invoices
+
 		boolean showTable;
 		if (invoices.isEmpty()) {
 			showTable = false;
@@ -43,27 +55,18 @@ public class InvoicesController {
 			showTable = true;
 		}
 		mv.addObject("showTable", showTable);
-		// there's more than one invoice and false if there are zero invoices
-
 		return mv;
-	}
-
-	public InvoicesController(InvoiceRepository invoiceRepository, CompanyRepository companyRepository,
-			BillingRecordRepository billingRecordRepository) {
-		super();
-		this.invoiceRepository = invoiceRepository;
-		this.companyRepository = companyRepository;
-		this.billingRecordRepository = billingRecordRepository;
 	}
 
 	@GetMapping("/clients")
 	public ModelAndView chooseClient() {
 		ModelAndView mv = new ModelAndView("invoices/clients");
-
-		// Get all the clients and add them to the model and view with the key "clients"
 		List<Company> clients = companyRepository.findAll();
 		mv.addObject("clients", clients);
 		return mv;
+
+		// Get all the clients and add them to the model and view with the key "clients"
+
 	}
 
 	@GetMapping("/clients/{clientId}")
@@ -73,8 +76,10 @@ public class InvoicesController {
 		// Get all the billing records for the specified client that have no associated
 		// invoice line item and add them with the key "records"
 		// Add the client id to the model and view with the key "clientId"
+
 		List<BillingRecord> clientRecords = billingRecordRepository.findByClientIdAndLineItemIsNull(clientId);
 		mv.addObject("records", clientRecords);
+		mv.addObject("clientId", clientId);
 		return mv;
 	}
 
@@ -82,8 +87,8 @@ public class InvoicesController {
 	public String createInvoice(Invoice invoice, @PathVariable Long clientId, long[] recordIds, Authentication auth) {
 		// Get the user from the auth.getPrincipal() method
 		User user = (User) auth.getPrincipal();
-		// Find all billing records in the recordIds array
 
+		// Find all billing records in the recordIds array
 		List<BillingRecord> records = new ArrayList<BillingRecord>();
 		for (Long id : recordIds) {
 			records.add(billingRecordRepository.findOne(id));
@@ -94,23 +99,25 @@ public class InvoicesController {
 
 		// For each billing record in the records found from recordIds
 		// Create a new invoice line item
+
 		for (BillingRecord record : records) {
 			InvoiceLineItem invoiceLineItem = new InvoiceLineItem();
+
+			invoiceLineItems.add(invoiceLineItem);
 
 			// Set the billing record on the invoice line item
 			invoiceLineItem.setBillingRecord(record);
 
 			// Set the created by to the user
-			invoiceLineItem.setCreatedBy(user);
+			record.setCreatedBy(user);
 
 			// Set the invoice on the invoice line item
-
 			invoiceLineItem.setInvoice(invoice);
 
 			// Add the invoice line item to the list of invoice line items
 			invoiceLineItems.add(invoiceLineItem);
-
 		}
+
 		// Set the list of line items on the invoice
 		invoice.setInvoiceLineItems(invoiceLineItems);
 
@@ -122,9 +129,9 @@ public class InvoicesController {
 		invoice.setCompany(client);
 
 		// Save the invoice to the database
-		invoiceRepository.save(invoice);
+		invoicesRepository.save(invoice);
 
 		return "redirect:/invoices";
-	}
 
+	}
 }

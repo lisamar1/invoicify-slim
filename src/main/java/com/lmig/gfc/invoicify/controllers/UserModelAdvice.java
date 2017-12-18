@@ -17,5 +17,5 @@ public class UserModelAdvice {
 			model.addAttribute("user", auth.getPrincipal());
 		}
 	}
-	
+
 }

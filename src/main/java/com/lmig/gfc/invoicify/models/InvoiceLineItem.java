@@ -11,57 +11,52 @@ import javax.persistence.OneToOne;
 @Entity
 public class InvoiceLineItem {
 
-	// This needs an id
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	 @Id
+	    @GeneratedValue(strategy = GenerationType.AUTO)
+	    private Long id;
 
-	// This needs a one-to-one relationship to a billing record named
-	// "billingRecord"
-	@OneToOne
-	private BillingRecord billingRecord;
-	
-	// This needs a many-to-one relationship to a user named "createdBy"
-	@ManyToOne
-	private User createdBy;
-	
-	// This needs a many-to-one relationship to an invoice named "invoice"
-	@ManyToOne
-	private Invoice invoice;
+	    // This needs a one-to-one relationship to a billing record named
+	    // "billingRecord"
+	    @OneToOne
+	    private BillingRecord billingRecord;
+	    
+	    // This needs a many-to-one relationship to a user named "createdBy"
+	    @ManyToOne
+	    private User createdBy;
+	    
+	    // This needs a many-to-one relationship to an invoice named "invoice"
+	    @ManyToOne
+	    private Invoice invoice;
 
-	public Long getId() {
-		return id;
-	}
+	    public User getCreatedBy() {
+			return createdBy;
+		}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+		public void setCreatedBy(User createdBy) {
+			this.createdBy = createdBy;
+		}
 
-	public BillingRecord getBillingRecord() {
-		return billingRecord;
-	}
+		public Invoice getInvoice() {
+			return invoice;
+		}
 
-	public void setBillingRecord(BillingRecord billingRecord) {
-		this.billingRecord = billingRecord;
-	}
+		public void setInvoice(Invoice invoice) {
+			this.invoice = invoice;
+		}
 
-	public User getCreatedBy() {
-		return createdBy;
-	}
+		public void setBillingRecord(BillingRecord billingRecord) {
+			this.billingRecord = billingRecord;
+		}
 
-	public void setCreatedBy(User createdBy) {
-		this.createdBy = createdBy;
-	}
+		public Long getId() {
+	        return id;
+	    }
 
-	public Invoice getInvoice() {
-		return invoice;
-	}
+	    public void setId(Long id) {
+	        this.id = id;
+	    }
 
-	public void setInvoice(Invoice invoice) {
-		this.invoice = invoice;
-	}
-
-	// Lots of getters and setters
-
+	    public BillingRecord getBillingRecord() {
+	        return billingRecord;
+	    }
 }
-

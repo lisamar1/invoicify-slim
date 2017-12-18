@@ -9,7 +9,7 @@ import com.lmig.gfc.invoicify.models.User;
 public interface UserRepository extends JpaRepository<User, Long> {
 
 	// METHOD NAMING ALGORITHM
-	// find by userName
+	// find by username
 	// findByUsername
 	public User findByUsername(String username);
 

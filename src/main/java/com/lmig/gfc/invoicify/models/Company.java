@@ -8,6 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 // This needs to be an entity
 @Entity
 public class Company {
@@ -23,6 +25,7 @@ public class Company {
 	// This needs a list of invoice objects named invoices as one-to-many
 	// relationship mapped by "company"
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "company")
 	private List<Invoice> invoices;
 
@@ -49,6 +52,7 @@ public class Company {
 	public void setInvoices(List<Invoice> invoices) {
 		this.invoices = invoices;
 	}
+
 
 	// Lots of getters and setters
 
