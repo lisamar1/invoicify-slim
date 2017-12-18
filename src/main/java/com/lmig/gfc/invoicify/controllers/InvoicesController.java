@@ -34,7 +34,7 @@ public class InvoicesController {
 		this.companyRepository = companyRepository;
 		this.billingRecordRepository = billingRecordRepository;
 	}
-
+ 
 	@GetMapping("")
 	public ModelAndView showInvoices() {
 		ModelAndView mv = new ModelAndView("invoices/list");
