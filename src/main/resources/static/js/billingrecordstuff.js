@@ -1,6 +1,6 @@
 $(function() {
 
-    $('#create-flat-fee-record').submit(function(e) {
+    $('#create-flat-fee-form').submit(function(e) {
         e.preventDefault();
 
         let flatFee = {
@@ -21,18 +21,19 @@ $(function() {
         
         $.post(settings)
         .done(function (data) {
-            $('#billingRecord-table')
-                .append(`
-                    <tr>
-                     <td>${ data.createdBy.username }</td>
-                        <td>${ data.description }</td>
-                        <td>${ data.client.name }</td>
-                        <td>${ data.amount }</td>
-                        <td>${ data.rate }</td>
-                        <td>${ data.quantity }</td>
-                        <td>${ data.total }</td>
-                	</tr>
-                		`);
+        	
+        $('#billingRecord-table')
+            .append(`
+              <tr>
+              <td>${ data.createdBy.username }</td>
+              <td>${ data.description }</td>
+              <td>${ data.client.name }</td>
+              <td>$${ data.amount}</td>
+              <td></td>
+              <td></td>
+              <td>$${ data.total }</td>
+              </tr>
+            `);
             $('#billingRecord-name').val('');
         });
     });
@@ -68,10 +69,10 @@ $(function() {
                         <td>${ data.createdBy.username }</td>
                         <td>${ data.description }</td>
                         <td>${ data.client.name }</td>
-                        <td>${ data.amount }</td>
-                        <td>${ data.rate }</td>
+                        <td></td>
+                        <td>$${ data.rate }</td>
                         <td>${ data.quantity }</td>
-                        <td>${ data.total }</td>
+                        <td>$${ data.total }</td>
                     </tr>
                 `);
             
